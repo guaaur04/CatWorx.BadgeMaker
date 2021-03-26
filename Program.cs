@@ -25,7 +25,7 @@ namespace CatWorx.BadgeMaker
                 int id = Int32.Parse(Console.ReadLine());
                 Console.Write("Enter Photo URL:");
                 string photoUrl  = Console.ReadLine();
-                Employee currentEmployee = new Employee(firstName,lastName,id,photoUrl);
+                Employee currentEmployee = new Employee(firstName,lastName, id, photoUrl);
                 employees.Add(currentEmployee);
             }
 
@@ -36,7 +36,9 @@ namespace CatWorx.BadgeMaker
         {
             for(int i=0; i < employees.Count; i++)
             {
-                Console.WriteLine(employees[i]);
+                string template = "{0,-10\t{1,-20}\t{2}";
+                Console.WriteLine(String.Format(template, employees[i].GetId(), employees[i].GetName(), employees[i].GetPhotoUrl()));
+                   
             }
         }
 
