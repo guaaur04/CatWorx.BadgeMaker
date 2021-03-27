@@ -15,7 +15,7 @@ namespace CatWorx.BadgeMaker
             for (int i = 0; i < employees.Count; i++)
             {
                 string template = "{0,-10}\t{1,-20}\t{2}";
-                Console.WriteLine(String.Format(template, employees[i].GetId(), employees[i].GetName(), employees[i].GetPhotoUrl()));
+                Console.WriteLine(String.Format(template, employees[i].GetId(), employees[i].GetName(), employees[i].GetPhotoUrl(),employees[i].GetCompanyName()));
             }
         }
         // Add another static method to Util class which will make our CSV file.
@@ -43,7 +43,7 @@ namespace CatWorx.BadgeMaker
                 // Write each employee’s info as a comma-separated string to the CSV file.
                 {
                     string template = "{0},{1},{2}";
-                    file.WriteLine(String.Format(template, employees[i].GetId(), employees[i].GetName(), employees[i].GetPhotoUrl()));
+                    file.WriteLine(String.Format(template, employees[i].GetId(), employees[i].GetName(), employees[i].GetPhotoUrl(),employees[i].GetCompanyName()));
                 }
             }
         }
@@ -74,6 +74,16 @@ namespace CatWorx.BadgeMaker
             int EMPLOYEE_ID_HEIGHT = 100;
 
 
+            //Graphics objects
+            StringFormat format = new StringFormat();
+            format.Alignment = StringAlignment.Center;
+            int FONT_SIZE = 32;
+            Font font = new Font("Arial", FONT_SIZE);
+            Font monoFont = new Font("Courier New", FONT_SIZE);
+
+            SolidBrush brush = new SolidBrush(Color.Black);
+
+
             //instance of WebClient is disposed after the code in the block has run
 
             using(WebClient client = new WebClient())
@@ -91,6 +101,21 @@ namespace CatWorx.BadgeMaker
                 Graphics graphic = Graphics.FromImage(badge);
                 graphic.DrawImage(background, new Rectangle(0,0,BADGE_WIDTH,BADGE_HEIGHT));
                 graphic.DrawImage(photo, new Rectangle(PHOTO_START_X,PHOTO_START_Y,PHOTO_WIDTH,PHOTO_HEIGHT));
+
+                //Company name
+                graphic.DrawString(
+                    employees[i].GetCompanyName(),
+                    font,
+                    new SolidBrush(Color.White),
+                    new Rectangle(
+                        COMPANY_NAME_START_X,
+                        COMPANY_NAME_START_Y,
+                        BADGE_WIDTH,
+                        COMPANY_NAME_WIDTH
+                    ),
+                    format
+
+                );
 
                 badge.Save("data/employeeBadge.png");
             }

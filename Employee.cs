@@ -26,5 +26,8 @@ namespace CatWorx.BadgeMaker
         {
             return PhotoUrl;
         }
+        public string GetCompanyName() {
+            return "Cat Worx";
+        }
     }
 }
