@@ -15,7 +15,7 @@ namespace CatWorx.BadgeMaker
             for (int i = 0; i < employees.Count; i++)
             {
                 string template = "{0,-10}\t{1,-20}\t{2}";
-                Console.WriteLine(String.Format(template, employees[i].GetId(), employees[i].GetName(), employees[i].GetPhotoUrl(),employees[i].GetCompanyName()));
+                Console.WriteLine(String.Format(template, employees[i].GetId(), employees[i].GetName(), employees[i].GetPhotoUrl(), employees[i].GetCompanyName()));
             }
         }
         // Add another static method to Util class which will make our CSV file.
@@ -43,12 +43,12 @@ namespace CatWorx.BadgeMaker
                 // Write each employee’s info as a comma-separated string to the CSV file.
                 {
                     string template = "{0},{1},{2}";
-                    file.WriteLine(String.Format(template, employees[i].GetId(), employees[i].GetName(), employees[i].GetPhotoUrl(),employees[i].GetCompanyName()));
+                    file.WriteLine(String.Format(template, employees[i].GetId(), employees[i].GetName(), employees[i].GetPhotoUrl(), employees[i].GetCompanyName()));
                 }
             }
         }
 
-        public static void MakeBadges(List<Employee>employees)
+        public static void MakeBadges(List<Employee> employees)
         {
             // Layout variables
             int BADGE_WIDTH = 669;
@@ -86,39 +86,72 @@ namespace CatWorx.BadgeMaker
 
             //instance of WebClient is disposed after the code in the block has run
 
-            using(WebClient client = new WebClient())
+            using (WebClient client = new WebClient())
             {
                 for (int i = 0; i < employees.Count; i++)
-            {
-    
-                Image photo = 
-                Image.FromStream(client.OpenRead(employees[i].GetPhotoUrl()));
+                {
 
-                Image background = Image.FromFile("badge.png");
-                // background.Save("data/employeeBadge.png");
+                    Image photo =
+                    Image.FromStream(client.OpenRead(employees[i].GetPhotoUrl()));
 
-                Image badge = new Bitmap(BADGE_WIDTH,BADGE_HEIGHT);
-                Graphics graphic = Graphics.FromImage(badge);
-                graphic.DrawImage(background, new Rectangle(0,0,BADGE_WIDTH,BADGE_HEIGHT));
-                graphic.DrawImage(photo, new Rectangle(PHOTO_START_X,PHOTO_START_Y,PHOTO_WIDTH,PHOTO_HEIGHT));
+                    Image background = Image.FromFile("badge.png");
+                    // background.Save("data/employeeBadge.png");
 
-                //Company name
-                graphic.DrawString(
-                    employees[i].GetCompanyName(),
-                    font,
-                    new SolidBrush(Color.White),
-                    new Rectangle(
-                        COMPANY_NAME_START_X,
-                        COMPANY_NAME_START_Y,
+                    Image badge = new Bitmap(BADGE_WIDTH, BADGE_HEIGHT);
+
+                    Graphics graphic = Graphics.FromImage(badge);
+
+                    graphic.DrawImage(background, new Rectangle(0, 0, BADGE_WIDTH, BADGE_HEIGHT));
+
+                    graphic.DrawImage(photo, new Rectangle(PHOTO_START_X, PHOTO_START_Y, PHOTO_WIDTH, PHOTO_HEIGHT));
+
+                    //Company name
+                    graphic.DrawString(
+                        employees[i].GetCompanyName(),
+                        font,
+                        new SolidBrush(Color.White),
+                        new Rectangle(
+                            COMPANY_NAME_START_X,
+                            COMPANY_NAME_START_Y,
+                            BADGE_WIDTH,
+                            COMPANY_NAME_WIDTH
+                        ),
+                        format
+
+                    );
+
+                    // Employee name
+                    graphic.DrawString(
+                      employees[i].GetName(),
+                      font,
+                      brush,
+                      new Rectangle(
+                        EMPLOYEE_NAME_START_X,
+                        EMPLOYEE_NAME_START_Y,
                         BADGE_WIDTH,
-                        COMPANY_NAME_WIDTH
+                        EMPLOYEE_NAME_HEIGHT
+                      ),
+                    format
+                    );
+
+                //Employee ID
+                graphic.DrawString(
+                    employees[i].GetId().ToString(),
+                    monoFont,
+                    brush,
+                    new Rectangle(
+                        EMPLOYEE_ID_START_X,
+                        EMPLOYEE_ID_START_Y,
+                        EMPLOYEE_ID_WIDTH,
+                        EMPLOYEE_ID_HEIGHT
+                    
                     ),
                     format
-
                 );
 
-                badge.Save("data/employeeBadge.png");
-            }
+
+                    badge.Save("data/employeeBadge.png");
+                }
 
             }
 
