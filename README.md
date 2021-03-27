@@ -6,5 +6,5 @@ This application uses C# (using mock data from the Random User Generator API) to
 
 Random User Generator API
 
-![Annie Hopkins Badge](/data/831662076_badge.png)
+![Lee Arnold Badge](/data/749580157_badge.png)
 
